@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="AI-powered fake news detection with blockchain-based source traceability.">
+  <title>AI Fake News Detection</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23d8b46a' stroke-width='2'%3E%3Cpath d='M12 2l8.66 5v10L12 22l-8.66-5V7z'/%3E%3Cpath d='M8.5 12.5l2.5 2.5 5-5'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&display=swap">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="intro-active">
+
+<!-- ============================================================ CINEMATIC INTRO -->
+<div class="intro" id="intro" aria-hidden="true">
+  <div class="intro-curtain top"></div>
+  <div class="intro-curtain bottom"></div>
+  <div class="intro-stage">
+    <div class="intro-words" id="intro-words"></div>
+    <div class="intro-line"></div>
+    <div class="intro-flicker">
+      <span class="flk flk-fake" data-text="FAKE">FAKE</span>
+      <span class="flk flk-real" data-text="REAL">REAL</span>
+    </div>
+    <div class="intro-scan"></div>
+    <svg class="intro-chain" viewBox="0 0 640 120" aria-hidden="true">
+      <path class="ic-link" d="M110 60H210M290 60H350M430 60H530"/>
+      <g class="ic-node" style="--i:0"><path d="M70 25l35 20v30l-35 20-35-20V45z"/></g>
+      <g class="ic-node" style="--i:1"><path d="M250 25l35 20v30l-35 20-35-20V45z"/></g>
+      <g class="ic-node" style="--i:2"><path d="M390 25l35 20v30l-35 20-35-20V45z"/></g>
+      <g class="ic-node" style="--i:3"><path d="M570 25l35 20v30l-35 20-35-20V45z"/></g>
+    </svg>
+    <div class="intro-title">
+      <h2 id="intro-title">AI Fake News Detection</h2>
+      <p>Source Traceability Using Blockchain</p>
+      <div class="intro-progress"><span></span></div>
+      <div class="intro-log" id="intro-log">Booting system…</div>
+    </div>
+  </div>
+  <button class="intro-skip" id="intro-skip" type="button">Skip intro <span aria-hidden="true">›</span></button>
+</div>
+
+<div class="ambient" aria-hidden="true"><div class="orb orb-1"></div><div class="orb orb-2"></div><div class="orb orb-3"></div></div>
+<canvas id="bg-network" aria-hidden="true"></canvas>
+<div class="cursor-glow" id="cursor-glow" aria-hidden="true"></div>
+<div class="grain" aria-hidden="true"></div>
+<div class="progress" id="progress" aria-hidden="true"></div>
+
+<!-- ============================================================ NAVBAR -->
+<header class="nav" id="nav">
+  <div class="container nav-inner">
+    <a href="#home" class="logo">
+      <svg class="ic logo-ic" viewBox="0 0 24 24"><path d="M12 2l8.66 5v10L12 22l-8.66-5V7z"/><path d="M8.5 12.5l2.5 2.5 5-5"/></svg>
+      <span>FakeNews<b>Detector</b></span>
+    </a>
+    <nav class="nav-links" id="nav-links">
+      <a href="#how">How it works</a>
+      <a href="#analyze">Analyze</a>
+      <a href="#trace">Trace source</a>
+      <a href="#ledger">Ledger</a>
+      <a href="#models">Models</a>
+    </nav>
+    <div class="nav-status">
+      <span class="pill" id="pill-model"><i class="live"></i>Model</span>
+      <span class="pill" id="pill-chain"><i class="live"></i>Blockchain</span>
+    </div>
+    <button class="menu-btn" id="menu-btn" type="button" aria-label="Toggle menu" aria-expanded="false"><span></span><span></span></button>
+  </div>
+</header>
+
+<main>
+  <!-- ========================================================== HERO -->
+  <section class="hero" id="home">
+    <div class="container hero-grid">
+      <div class="hero-copy">
+        <span class="eyebrow hero-in" style="--d:0">AI · NLP · Blockchain</span>
+        <h1 class="hero-in" style="--d:1">
+          Detect fake news.<br>
+          <em class="glitch gold-shimmer" data-text="Trace the truth.">Trace the truth.</em>
+        </h1>
+        <p class="lead hero-in" style="--d:2">
+          An intelligent system that classifies news as <strong class="t-real">Real</strong> or
+          <strong class="t-fake">Fake</strong> using machine learning and deep learning, and stores every
+          news source on a tamper-proof <strong>Ethereum</strong> ledger so its origin can always be traced.
+        </p>
+        <div class="hero-cta hero-in" style="--d:3">
+          <a href="#analyze" class="btn btn-primary btn-lg magnetic">
+            <svg class="ic" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+            Analyze news
+          </a>
+          <a href="#how" class="btn btn-ghost btn-lg magnetic">How it works</a>
+        </div>
+        <div class="stats hero-in" style="--d:4">
+          <div class="stat"><b id="stat-models">—</b><span>AI models</span></div>
+          <div class="stat"><b id="stat-records">—</b><span>Ledger records</span></div>
+          <div class="stat"><b id="stat-sources">—</b><span>Verified sources</span></div>
+          <div class="stat"><b id="stat-acc">—</b><span>FakeNewsNet accuracy</span></div>
+        </div>
+      </div>
+
+      <div class="hero-visual hero-in" style="--d:2">
+        <div class="scanner tilt">
+          <div class="scanner-head">
+            <i></i><i></i><i></i><span>news_article.txt</span>
+          </div>
+          <div class="scanner-body">
+            <div class="sk sk-title"></div>
+            <div class="sk"></div><div class="sk w90"></div><div class="sk w75"></div>
+            <div class="sk w95"></div><div class="sk w60"></div><div class="sk"></div><div class="sk w80"></div>
+            <div class="scan-beam"></div>
+          </div>
+          <div class="scanner-foot">
+            <span class="chip">NLTK</span><span class="chip">TF-IDF</span><span class="chip">CNN</span>
+            <span class="chip">LSTM</span><span class="chip">RoBERTa</span>
+          </div>
+          <div class="float-badge fb-1">
+            <svg class="ic" viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.07 0l3-3a5 5 0 0 0-7.07-7.07l-1.5 1.5"/><path d="M14 11a5 5 0 0 0-7.07 0l-3 3a5 5 0 0 0 7.07 7.07l1.5-1.5"/></svg>
+            Block <b id="hero-block">#—</b>
+          </div>
+          <div class="float-badge fb-2"><span class="mono">keccak256</span> hash</div>
+          <div class="float-badge fb-3"><i class="live"></i> Real-time analysis</div>
+        </div>
+      </div>
+    </div>
+    <a href="#how" class="scroll-hint" aria-label="Scroll down"><span></span></a>
+  </section>
+
+  <!-- ========================================================== TECHNOLOGY MARQUEE -->
+  <div class="marquee" aria-label="Technologies used">
+    <div class="marquee-track">
+      <span>Python</span><span>Scikit-learn</span><span>PyTorch</span><span>RoBERTa</span><span>CNN</span><span>LSTM</span>
+      <span>NLTK</span><span>TF-IDF</span><span>Pandas</span><span>Ethereum</span><span>Solidity</span><span>Flask</span>
+      <span aria-hidden="true">Python</span><span aria-hidden="true">Scikit-learn</span><span aria-hidden="true">PyTorch</span><span aria-hidden="true">RoBERTa</span><span aria-hidden="true">CNN</span><span aria-hidden="true">LSTM</span>
+      <span aria-hidden="true">NLTK</span><span aria-hidden="true">TF-IDF</span><span aria-hidden="true">Pandas</span><span aria-hidden="true">Ethereum</span><span aria-hidden="true">Solidity</span><span aria-hidden="true">Flask</span>
+    </div>
+  </div>
+
+  <!-- ========================================================== HOW IT WORKS -->
+  <section class="section" id="how">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">Methodology</span>
+        <h2>How the system <em>works</em></h2>
+        <p class="muted">From raw news text to a verified, tamper-proof record — seven steps.</p>
+      </div>
+      <ol class="steps">
+        <li class="step reveal" style="--d:0">
+          <span class="step-no">01</span>
+          <svg class="ic" viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v6c0 1.66 3.58 3 8 3s8-1.34 8-3V5"/><path d="M4 11v6c0 1.66 3.58 3 8 3s8-1.34 8-3v-6"/></svg>
+          <h3>Data collection</h3><p>Real &amp; fake news from the FakeNewsNet and LIAR datasets.</p>
+        </li>
+        <li class="step reveal" style="--d:1">
+          <span class="step-no">02</span>
+          <svg class="ic" viewBox="0 0 24 24"><path d="M3 4h18l-7 8v6l-4 2v-8z"/></svg>
+          <h3>Preprocessing</h3><p>NLTK cleaning, tokenization, stop-word removal &amp; normalization.</p>
+        </li>
+        <li class="step reveal" style="--d:2">
+          <span class="step-no">03</span>
+          <svg class="ic" viewBox="0 0 24 24"><path d="M4 20V11M10 20V4M16 20v-7M21 20H3"/></svg>
+          <h3>Feature extraction</h3><p>Text becomes numbers with TF-IDF and word embeddings.</p>
+        </li>
+        <li class="step reveal" style="--d:3">
+          <span class="step-no">04</span>
+          <svg class="ic" viewBox="0 0 24 24"><rect x="6" y="6" width="12" height="12" rx="2"/><path d="M9 2v4M15 2v4M9 18v4M15 18v4M2 9h4M2 15h4M18 9h4M18 15h4"/></svg>
+          <h3>Model training</h3><p>RoBERTa, CNN and LSTM, plus LR, Random Forest &amp; SVM.</p>
+        </li>
+        <li class="step reveal" style="--d:4">
+          <span class="step-no">05</span>
+          <svg class="ic" viewBox="0 0 24 24"><path d="M12 2l8 3v6c0 5-3.5 9-8 11-4.5-2-8-6-8-11V5z"/><path d="M12 8v4M12 16h.01"/></svg>
+          <h3>Fake news detection</h3><p>The trained model classifies content as Real or Fake.</p>
+        </li>
+        <li class="step reveal" style="--d:5">
+          <span class="step-no">06</span>
+          <svg class="ic" viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.07 0l3-3a5 5 0 0 0-7.07-7.07l-1.5 1.5"/><path d="M14 11a5 5 0 0 0-7.07 0l-3 3a5 5 0 0 0 7.07 7.07l1.5-1.5"/></svg>
+          <h3>Blockchain traceability</h3><p>Source stored on Ethereum with a unique, unalterable hash.</p>
+        </li>
+        <li class="step reveal" style="--d:6">
+          <span class="step-no">07</span>
+          <svg class="ic" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="13" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+          <h3>User interface</h3><p>Instant classification with source verification status.</p>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- ========================================================== ANALYZE -->
+  <section class="section" id="analyze">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">Live detection</span>
+        <h2>Analyze any <em>news</em> in seconds</h2>
+        <p class="muted">The AI classifies the text and the source is verified &amp; recorded on the blockchain.</p>
+      </div>
+      <div class="grid-2">
+        <form class="card spot reveal" id="analyze-form" novalidate>
+          <label for="news-text">News text or headline <span class="req">*</span></label>
+          <div class="textarea-wrap">
+            <textarea id="news-text" rows="7" maxlength="10000"
+                      placeholder="Paste a headline or the full text of a news article…"></textarea>
+            <span class="counter"><span id="char-count">0</span> / 10000</span>
+          </div>
+
+          <div class="row">
+            <div class="field">
+              <label for="news-source">Source / publisher</label>
+              <input id="news-source" type="text" maxlength="200" placeholder="e.g. reuters.com or a speaker name">
+            </div>
+            <div class="field">
+              <label for="news-url">Source URL</label>
+              <input id="news-url" type="url" maxlength="500" placeholder="https://…">
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="field">
+              <label for="model-select">AI model</label>
+              <div class="select-wrap"><select id="model-select"></select></div>
+            </div>
+            <label class="switch">
+              <input type="checkbox" id="record-chain" checked>
+              <span class="track"><span class="thumb"></span></span>
+              Record on blockchain
+            </label>
+          </div>
+
+          <div class="error" id="analyze-error" role="alert" hidden></div>
+          <div class="actions">
+            <button type="button" class="btn btn-ghost" id="clear-btn">Clear</button>
+            <button type="submit" class="btn btn-primary" id="analyze-btn">
+              <span class="spinner" hidden></span><span class="btn-label">Analyze news</span>
+            </button>
+          </div>
+        </form>
+
+        <div class="card console reveal" id="result" aria-live="polite">
+          <!-- idle -->
+          <div class="state" id="state-idle">
+            <div class="radar"><span></span></div>
+            <p>Awaiting input. Enter a news headline or article and press <strong>Analyze news</strong>.</p>
+          </div>
+          <!-- scanning -->
+          <div class="state" id="state-scan" hidden>
+            <div class="scan-text"><p id="scan-excerpt"></p><div class="scan-laser"></div></div>
+            <ul class="scan-steps" id="scan-steps">
+              <li>Cleaning &amp; tokenizing text (NLTK)</li>
+              <li>Extracting features</li>
+              <li id="scan-model-step">Running AI model</li>
+              <li>Verifying source on Ethereum</li>
+            </ul>
+          </div>
+          <!-- result -->
+          <div class="state" id="state-result" hidden>
+            <div class="verdict-row">
+              <div class="gauge" id="gauge">
+                <svg viewBox="0 0 120 120"><circle class="g-bg" cx="60" cy="60" r="52"/><circle class="g-fg" id="gauge-fg" cx="60" cy="60" r="52"/></svg>
+                <div class="gauge-val"><b id="gauge-num">0</b><span>% confidence</span></div>
+              </div>
+              <div class="verdict-box">
+                <span class="muted small">AI classification</span>
+                <div class="stamp" id="verdict-label"></div>
+                <p class="muted small" id="model-used"></p>
+              </div>
+            </div>
+            <div class="prob-bars">
+              <div class="prob-row"><span>Real</span><div class="bar"><div class="bar-fill real" id="bar-real"></div></div><span id="pct-real"></span></div>
+              <div class="prob-row"><span>Fake</span><div class="bar"><div class="bar-fill fake" id="bar-fake"></div></div><span id="pct-fake"></span></div>
+            </div>
+            <h3 class="sub-h">Source verification</h3>
+            <div id="chain-result"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================== TRACE -->
+  <section class="section" id="trace">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">Traceability</span>
+        <h2>Trace a news <em>source</em></h2>
+        <p class="muted">Find where content first appeared on the ledger — nothing is written to the blockchain.</p>
+      </div>
+      <div class="grid-2">
+        <div class="card spot reveal">
+          <h3 class="card-h">Trace by news content</h3>
+          <form id="trace-form" novalidate>
+            <label for="trace-text">News text or headline <span class="req">*</span></label>
+            <textarea id="trace-text" rows="5" maxlength="10000"></textarea>
+            <label for="trace-source">Claimed source (optional)</label>
+            <input id="trace-source" type="text" maxlength="200" placeholder="e.g. bbc.com">
+            <div class="error" id="trace-error" role="alert" hidden></div>
+            <div class="actions">
+              <button type="submit" class="btn btn-primary"><span class="spinner" hidden></span><span class="btn-label">Trace</span></button>
+            </div>
+          </form>
+        </div>
+        <div class="card spot reveal">
+          <h3 class="card-h">Look up by record hash</h3>
+          <form id="hash-form" novalidate>
+            <label for="hash-input">Content hash</label>
+            <input id="hash-input" type="text" placeholder="0x…" spellcheck="false" class="mono">
+            <div class="error" id="hash-error" role="alert" hidden></div>
+            <div class="actions">
+              <button type="submit" class="btn btn-primary"><span class="spinner" hidden></span><span class="btn-label">Look up</span></button>
+            </div>
+          </form>
+          <div id="trace-result"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================== LEDGER -->
+  <section class="section" id="ledger">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">Ethereum</span>
+        <h2>Blockchain <em>ledger</em></h2>
+        <p class="muted mono small" id="chain-meta"></p>
+      </div>
+      <div class="chain-strip reveal" id="chain-strip"></div>
+      <div class="card reveal">
+        <div class="card-head">
+          <h3 class="card-h">Recent records <span class="muted small" id="ledger-total"></span></h3>
+          <button class="btn btn-ghost btn-sm" id="refresh-ledger" type="button">
+            <svg class="ic" viewBox="0 0 24 24"><path d="M20 11a8 8 0 1 0-2.3 5.7M20 4v7h-7"/></svg> Refresh
+          </button>
+        </div>
+        <div class="table-wrap">
+          <table class="table" id="ledger-table">
+            <thead><tr><th>Registered</th><th>Content hash</th><th>Source</th><th>AI result</th><th>Block</th><th>Integrity</th></tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+        <div class="error" id="ledger-error" role="alert" hidden></div>
+      </div>
+      <div class="card reveal">
+        <h3 class="card-h">Verified sources registry</h3>
+        <p class="muted small">Publishers registered as verified on the smart contract (managed by the contract owner).</p>
+        <div class="chips" id="sources-list"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================== MODELS -->
+  <section class="section" id="models">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">Evaluation</span>
+        <h2>Model <em>performance</em></h2>
+        <p class="muted" id="dataset-info"></p>
+      </div>
+      <div class="model-grid" id="model-grid"></div>
+      <p class="muted small center">Precision, recall and F1-score are reported for the <em>Fake</em> class on the held-out test set.
+        The default model is the one with the best validation F1-score.</p>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="container footer-inner">
+    <div>
+      <div class="logo">
+        <svg class="ic logo-ic" viewBox="0 0 24 24"><path d="M12 2l8.66 5v10L12 22l-8.66-5V7z"/><path d="M8.5 12.5l2.5 2.5 5-5"/></svg>
+        <span>FakeNews<b>Detector</b></span>
+      </div>
+      <p class="muted small">AI-Powered Fake News Detection and Source Traceability Using Blockchain</p>
+    </div>
+    <div class="small muted footer-team">
+      <p><b>Fatima Aamir</b> (MLT-0000125) · <b>Hijab Fatima</b> (MLT-0000115)</p>
+      <p>Supervised by <b>Ms. Sanam Nayab</b></p>
+      <p>Department of Software Engineering · NUML Multan</p>
+    </div>
+  </div>
+</footer>
+
+<script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>

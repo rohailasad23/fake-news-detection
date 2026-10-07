@@ -1,0 +1,434 @@
+{
+  "models": {
+    "logistic_regression": {
+      "display_name": "Logistic Regression (TF-IDF)",
+      "validation": {
+        "accuracy": 0.7221095334685599,
+        "precision": 0.5691847419596111,
+        "recall": 0.6652097902097902,
+        "f1": 0.6134623135832326,
+        "confusion_matrix": [
+          [
+            1731,
+            576
+          ],
+          [
+            383,
+            761
+          ]
+        ]
+      },
+      "test": {
+        "accuracy": 0.7374674007534048,
+        "precision": 0.5704225352112676,
+        "recall": 0.6712707182320442,
+        "f1": 0.616751269035533,
+        "confusion_matrix": [
+          [
+            1816,
+            549
+          ],
+          [
+            357,
+            729
+          ]
+        ]
+      },
+      "test_by_dataset": {
+        "FakeNewsNet": {
+          "accuracy": 0.8310313075506446,
+          "precision": 0.6377295492487479,
+          "recall": 0.7180451127819549,
+          "f1": 0.6755083996463307,
+          "confusion_matrix": [
+            [
+              1423,
+              217
+            ],
+            [
+              150,
+              382
+            ]
+          ]
+        },
+        "LIAR": {
+          "accuracy": 0.5785770132916341,
+          "precision": 0.5110456553755522,
+          "recall": 0.6263537906137184,
+          "f1": 0.5628548256285483,
+          "confusion_matrix": [
+            [
+              393,
+              332
+            ],
+            [
+              207,
+              347
+            ]
+          ]
+        }
+      },
+      "train_seconds": 201.0
+    },
+    "random_forest": {
+      "display_name": "Random Forest (TF-IDF)",
+      "validation": {
+        "accuracy": 0.7055925818603304,
+        "precision": 0.540506329113924,
+        "recall": 0.7465034965034965,
+        "f1": 0.6270190895741556,
+        "confusion_matrix": [
+          [
+            1581,
+            726
+          ],
+          [
+            290,
+            854
+          ]
+        ]
+      },
+      "test": {
+        "accuracy": 0.6968994494349464,
+        "precision": 0.512610340479193,
+        "recall": 0.7486187845303868,
+        "f1": 0.6085329341317365,
+        "confusion_matrix": [
+          [
+            1592,
+            773
+          ],
+          [
+            273,
+            813
+          ]
+        ]
+      },
+      "test_by_dataset": {
+        "FakeNewsNet": {
+          "accuracy": 0.7983425414364641,
+          "precision": 0.5699404761904762,
+          "recall": 0.7199248120300752,
+          "f1": 0.6362126245847176,
+          "confusion_matrix": [
+            [
+              1351,
+              289
+            ],
+            [
+              149,
+              383
+            ]
+          ]
+        },
+        "LIAR": {
+          "accuracy": 0.524628616106333,
+          "precision": 0.47045951859956237,
+          "recall": 0.776173285198556,
+          "f1": 0.5858310626702997,
+          "confusion_matrix": [
+            [
+              241,
+              484
+            ],
+            [
+              124,
+              430
+            ]
+          ]
+        }
+      },
+      "train_seconds": 56.0
+    },
+    "svm": {
+      "display_name": "Support Vector Machine (TF-IDF)",
+      "validation": {
+        "accuracy": 0.7403651115618661,
+        "precision": 0.6675675675675675,
+        "recall": 0.4318181818181818,
+        "f1": 0.524416135881104,
+        "confusion_matrix": [
+          [
+            2061,
+            246
+          ],
+          [
+            650,
+            494
+          ]
+        ]
+      },
+      "test": {
+        "accuracy": 0.7539843523616343,
+        "precision": 0.6690442225392297,
+        "recall": 0.43186003683241253,
+        "f1": 0.5249020705092333,
+        "confusion_matrix": [
+          [
+            2133,
+            232
+          ],
+          [
+            617,
+            469
+          ]
+        ]
+      },
+      "test_by_dataset": {
+        "FakeNewsNet": {
+          "accuracy": 0.8434622467771639,
+          "precision": 0.7711864406779662,
+          "recall": 0.5131578947368421,
+          "f1": 0.6162528216704289,
+          "confusion_matrix": [
+            [
+              1559,
+              81
+            ],
+            [
+              259,
+              273
+            ]
+          ]
+        },
+        "LIAR": {
+          "accuracy": 0.6020328381548085,
+          "precision": 0.5648414985590778,
+          "recall": 0.35379061371841153,
+          "f1": 0.43507214206437295,
+          "confusion_matrix": [
+            [
+              574,
+              151
+            ],
+            [
+              358,
+              196
+            ]
+          ]
+        }
+      },
+      "train_seconds": 214.3
+    },
+    "cnn": {
+      "display_name": "Convolutional Neural Network (CNN)",
+      "validation": {
+        "accuracy": 0.6566212691973341,
+        "precision": 0.48925013109596227,
+        "recall": 0.8155594405594405,
+        "f1": 0.6116027531956736,
+        "confusion_matrix": [
+          [
+            1333,
+            974
+          ],
+          [
+            211,
+            933
+          ]
+        ]
+      },
+      "test": {
+        "accuracy": 0.6569110402781803,
+        "precision": 0.4737124463519313,
+        "recall": 0.8130755064456722,
+        "f1": 0.5986440677966102,
+        "confusion_matrix": [
+          [
+            1384,
+            981
+          ],
+          [
+            203,
+            883
+          ]
+        ]
+      },
+      "test_by_dataset": {
+        "FakeNewsNet": {
+          "accuracy": 0.740791896869245,
+          "precision": 0.48220436280137774,
+          "recall": 0.7894736842105263,
+          "f1": 0.5987170349251604,
+          "confusion_matrix": [
+            [
+              1189,
+              451
+            ],
+            [
+              112,
+              420
+            ]
+          ]
+        },
+        "LIAR": {
+          "accuracy": 0.5144644253322909,
+          "precision": 0.4662638469284995,
+          "recall": 0.8357400722021661,
+          "f1": 0.5985778926955397,
+          "confusion_matrix": [
+            [
+              195,
+              530
+            ],
+            [
+              91,
+              463
+            ]
+          ]
+        }
+      },
+      "train_seconds": 328.9
+    },
+    "lstm": {
+      "display_name": "Long Short-Term Memory (BiLSTM)",
+      "validation": {
+        "accuracy": 0.7079107505070994,
+        "precision": 0.549062049062049,
+        "recall": 0.6652097902097902,
+        "f1": 0.6015810276679842,
+        "confusion_matrix": [
+          [
+            1682,
+            625
+          ],
+          [
+            383,
+            761
+          ]
+        ]
+      },
+      "test": {
+        "accuracy": 0.7131266299623298,
+        "precision": 0.534833091436865,
+        "recall": 0.6786372007366482,
+        "f1": 0.5982142857142857,
+        "confusion_matrix": [
+          [
+            1724,
+            641
+          ],
+          [
+            349,
+            737
+          ]
+        ]
+      },
+      "test_by_dataset": {
+        "FakeNewsNet": {
+          "accuracy": 0.817219152854512,
+          "precision": 0.6138279932546374,
+          "recall": 0.6842105263157895,
+          "f1": 0.6471111111111111,
+          "confusion_matrix": [
+            [
+              1411,
+              229
+            ],
+            [
+              168,
+              364
+            ]
+          ]
+        },
+        "LIAR": {
+          "accuracy": 0.5363565285379203,
+          "precision": 0.4751592356687898,
+          "recall": 0.6732851985559567,
+          "f1": 0.5571321882001493,
+          "confusion_matrix": [
+            [
+              313,
+              412
+            ],
+            [
+              181,
+              373
+            ]
+          ]
+        }
+      },
+      "train_seconds": 314.9
+    },
+    "roberta": {
+      "display_name": "RoBERTa (Transformer)",
+      "validation": {
+        "accuracy": 0.7331208345407129,
+        "precision": 0.6427656850192062,
+        "recall": 0.4388111888111888,
+        "f1": 0.5215584415584416,
+        "confusion_matrix": [
+          [
+            2028,
+            279
+          ],
+          [
+            642,
+            502
+          ]
+        ]
+      },
+      "test": {
+        "accuracy": 0.7328310634598667,
+        "precision": 0.6027568922305765,
+        "recall": 0.4429097605893186,
+        "f1": 0.5106157112526539,
+        "confusion_matrix": [
+          [
+            2048,
+            317
+          ],
+          [
+            605,
+            481
+          ]
+        ]
+      },
+      "test_by_dataset": {
+        "FakeNewsNet": {
+          "accuracy": 0.83195211786372,
+          "precision": 0.6868008948545862,
+          "recall": 0.5770676691729323,
+          "f1": 0.627170582226762,
+          "confusion_matrix": [
+            [
+              1500,
+              140
+            ],
+            [
+              225,
+              307
+            ]
+          ]
+        },
+        "LIAR": {
+          "accuracy": 0.5645035183737295,
+          "precision": 0.49572649572649574,
+          "recall": 0.3140794223826715,
+          "f1": 0.38453038674033146,
+          "confusion_matrix": [
+            [
+              548,
+              177
+            ],
+            [
+              380,
+              174
+            ]
+          ]
+        }
+      },
+      "train_seconds": 5388.8
+    }
+  },
+  "dataset": {
+    "train": 27627,
+    "valid": 3451,
+    "test": 3451,
+    "sources": [
+      "FakeNewsNet (PolitiFact, GossipCop)",
+      "LIAR"
+    ]
+  },
+  "best_model": "random_forest"
+}

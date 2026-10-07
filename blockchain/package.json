@@ -1,0 +1,11 @@
+{
+  "name": "fake-news-ledger-node",
+  "private": true,
+  "description": "Local Ethereum development node (Ganache) for the news source ledger",
+  "scripts": {
+    "chain": "ganache --wallet.deterministic --chain.chainId 1337 --server.port 8545 --database.dbPath ./chain-data --logging.quiet"
+  },
+  "devDependencies": {
+    "ganache": "^7.9.2"
+  }
+}

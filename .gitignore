@@ -1,0 +1,20 @@
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# downloaded / generated data
+data/raw/
+data/processed/
+data/nltk_data/
+
+# large trained weights (regenerate with `python -m ml.train`)
+models/*.joblib
+models/*.pt
+models/roberta/
+
+# local blockchain
+blockchain/node_modules/
+blockchain/chain-data/
+blockchain/deployment.json
+models/*.log
