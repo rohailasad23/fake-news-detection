@@ -46,7 +46,9 @@ ROBERTA_MODEL_NAME = os.getenv("ROBERTA_MODEL_NAME", "roberta-base")
 ROBERTA_MAX_LEN = 64
 ROBERTA_EPOCHS = int(os.getenv("ROBERTA_EPOCHS", "1"))
 ROBERTA_BATCH_SIZE = 16
-ROBERTA_LR = 2e-5
+ROBERTA_LR = 3e-5
+# Lower encoder layers kept frozen (of 12) so fine-tuning fits in limited RAM on a CPU; 0 = full fine-tuning.
+ROBERTA_FREEZE_LAYERS = int(os.getenv("ROBERTA_FREEZE_LAYERS", "8"))
 # Optional cap on RoBERTa training rows (CPU training is slow); 0 = use the full training split.
 ROBERTA_MAX_TRAIN = int(os.getenv("ROBERTA_MAX_TRAIN", "0"))
 

@@ -11,6 +11,17 @@ class ModelNotAvailable(Exception):
     pass
 
 
+def _rescale(prob, threshold):
+    """Map a model probability so its tuned decision threshold sits at 0.5.
+
+    The displayed Real/Fake percentages then agree with the label: whichever side of the
+    threshold the model falls on is the side above 50%.
+    """
+    if prob < threshold:
+        return 0.5 * prob / threshold
+    return 0.5 + 0.5 * (prob - threshold) / (1 - threshold)
+
+
 class Predictor:
     def __init__(self):
         self._models = {}
@@ -55,8 +66,10 @@ class Predictor:
         if model_name != "roberta" and not clean:
             raise ValueError("The text contains no meaningful words after preprocessing.")
         model_input = basic_clean(text) if model_name == "roberta" else clean
-        fake_prob = float(self._get(model_name).predict_proba([model_input])[0])
-        is_fake = fake_prob >= 0.5
+        raw_prob = float(self._get(model_name).predict_proba([model_input])[0])
+        threshold = self.metrics["models"][model_name].get("threshold", 0.5)
+        fake_prob = _rescale(raw_prob, threshold)
+        is_fake = raw_prob >= threshold
         return {
             "label": config.LABEL_NAMES[int(is_fake)],
             "confidence": round(fake_prob if is_fake else 1 - fake_prob, 4),

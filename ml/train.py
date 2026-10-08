@@ -8,10 +8,12 @@ import argparse
 import json
 import time
 
+import numpy as np
+
 import config
 from ml import classical, deep
 from ml.data import load_split
-from ml.evaluation import evaluate
+from ml.evaluation import best_threshold, evaluate
 from ml.preprocessing import basic_clean
 
 ALL_MODELS = ["logistic_regression", "random_forest", "svm", "cnn", "lstm", "roberta"]
@@ -26,18 +28,23 @@ DISPLAY_NAMES = {
 
 
 def _record(metrics, name, model_probs_valid, model_probs_test, valid, test, seconds):
+    model_probs_valid, model_probs_test = np.asarray(model_probs_valid), np.asarray(model_probs_test)
+    # The decision threshold is tuned on validation data only; the test set stays untouched.
+    threshold = best_threshold(valid["label"], model_probs_valid)
     by_dataset = {}
     for ds, part in test.groupby(test["dataset"].str.split("-").str[0]):
-        by_dataset[ds] = evaluate(part["label"], model_probs_test[part.index])
+        by_dataset[ds] = evaluate(part["label"], model_probs_test[part.index], threshold)
     metrics["models"][name] = {
         "display_name": DISPLAY_NAMES[name],
-        "validation": evaluate(valid["label"], model_probs_valid),
-        "test": evaluate(test["label"], model_probs_test),
+        "threshold": threshold,
+        "validation": evaluate(valid["label"], model_probs_valid, threshold),
+        "test": evaluate(test["label"], model_probs_test, threshold),
         "test_by_dataset": by_dataset,
         "train_seconds": round(seconds, 1),
     }
+    np.savez_compressed(config.MODELS_DIR / f"probs_{name}.npz", valid=model_probs_valid, test=model_probs_test)
     t = metrics["models"][name]["test"]
-    print(f"==> {name}: acc={t['accuracy']:.4f} prec={t['precision']:.4f} "
+    print(f"==> {name} (threshold {threshold:.2f}): acc={t['accuracy']:.4f} prec={t['precision']:.4f} "
           f"rec={t['recall']:.4f} f1={t['f1']:.4f}")
     _save(metrics)
 

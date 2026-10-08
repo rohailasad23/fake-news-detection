@@ -34,20 +34,25 @@ immutable `NewsRegistered` event emitted in its registration transaction.
 
 | Model | Accuracy | Precision (Fake) | Recall (Fake) | F1 (Fake) | FakeNewsNet acc. | LIAR acc. |
 |---|---|---|---|---|---|---|
-| Logistic Regression (TF-IDF) | 73.7% | 57.0% | 67.1% | 61.7% | 83.1% | 57.9% |
-| Random Forest (TF-IDF) — default | 69.7% | 51.3% | 74.9% | 60.9% | 79.8% | 52.5% |
-| SVM (TF-IDF) | 75.4% | 66.9% | 43.2% | 52.5% | 84.3% | 60.2% |
-| CNN | 65.7% | 47.4% | 81.3% | 59.9% | 74.1% | 51.4% |
-| BiLSTM | 71.3% | 53.5% | 67.9% | 59.8% | 81.7% | 53.6% |
-| RoBERTa* | 73.3% | 60.3% | 44.3% | 51.1% | 83.2% | 56.5% |
+| **RoBERTa (default)** | **77.8%** | **63.5%** | 69.7% | **66.4%** | **87.0%** | **62.2%** |
+| Logistic Regression (TF-IDF) | 74.8% | 59.4% | 62.5% | 60.9% | 84.4% | 58.4% |
+| SVM (TF-IDF) | 73.0% | 55.6% | 71.1% | 62.4% | 83.3% | 55.5% |
+| Random Forest (TF-IDF) | 72.4% | 55.5% | 62.4% | 58.8% | 82.2% | 55.8% |
+| BiLSTM | 71.1% | 53.1% | 68.9% | 60.0% | 81.5% | 53.4% |
+| CNN | 71.0% | 53.5% | 59.1% | 56.2% | 80.5% | 54.8% |
 
-The default model is the one with the best validation F1-score.
-\*RoBERTa was fine-tuned for one epoch on a random 6,000-row subset, because the development machine has only
-3.9 GB of RAM and no GPU. On a GPU machine, train it on the full split (`ROBERTA_MAX_TRAIN=0`, `ROBERTA_EPOCHS=3`).
+- The default model is the one with the best validation F1-score.
+- Each model's decision threshold is tuned on the **validation** set to maximise macro-F1, because the data is
+  imbalanced (about 31% fake). The test set is used only for the final numbers above. The confidence shown in the
+  app is the model probability rescaled so that this threshold sits at 50%.
+- RoBERTa (`roberta-base`) was fine-tuned for 2 epochs on the full training split with class-weighted loss. The
+  embeddings and the lower 8 of 12 encoder layers were frozen so training fits a CPU-only machine with 3.9 GB of
+  RAM (about 80 minutes per epoch). On a GPU, set `ROBERTA_FREEZE_LAYERS=0` for full fine-tuning.
 
 Results fall short of the proposal's expected 90–95%. That range comes from studies on article-level datasets,
 whereas this project uses headline/statement-level data. LIAR in particular is a known hard benchmark: binary
-results reported on its short political statements are typically in the 60–70% range. On FakeNewsNet the models reach about 80–84%.
+results reported on its short political statements are typically in the 60–70% range. On FakeNewsNet the best
+model reaches 87%.
 
 ## Technologies
 Python · scikit-learn · PyTorch · Hugging Face Transformers (RoBERTa) · NLTK · Pandas ·
@@ -70,8 +75,9 @@ python -m ml.data
 # 3. Train and evaluate all models
 python -m ml.train
 #   or a subset:  python -m ml.train --models logistic_regression svm cnn lstm
-#   RoBERTa on a CPU-only / low-RAM machine: fine-tune on a random subset of the training rows
-#   (Windows PowerShell: $env:ROBERTA_MAX_TRAIN="6000"; python -m ml.train --models roberta)
+#   RoBERTa settings (environment variables): ROBERTA_EPOCHS (default 1), ROBERTA_FREEZE_LAYERS (default 8),
+#   ROBERTA_MAX_TRAIN (0 = all rows). The reported model used, in Windows PowerShell:
+#   $env:ROBERTA_EPOCHS="2"; python -m ml.train --models roberta
 
 # 4. Start the local Ethereum node (separate terminal, keep it running)
 cd blockchain
@@ -82,6 +88,9 @@ npm run chain
 python app.py
 # open http://127.0.0.1:5000
 ```
+
+**One-click start (Windows):** after the setup above, double-click `start.bat`. It starts Ganache and the web
+app in two windows and opens the browser once the app is ready. Close the two windows to stop.
 
 The blockchain data persists in `blockchain/chain-data/`. To use another Ethereum network (for example
 the Sepolia testnet), set `ETH_RPC_URL` and `ETH_PRIVATE_KEY` before starting the app.

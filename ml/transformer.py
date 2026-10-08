@@ -34,6 +34,21 @@ def _predict(model, tokenizer, texts):
     return np.concatenate(probs) if probs else np.array([])
 
 
+def _freeze_lower_layers(model, n_layers):
+    """Freeze the embeddings and the lowest `n_layers` encoder layers; return trainable params.
+
+    Fine-tuning only the upper layers keeps memory and CPU time low enough to train on the
+    full dataset on a machine without a GPU.
+    """
+    if n_layers > 0:
+        for p in model.roberta.embeddings.parameters():
+            p.requires_grad = False
+        for layer in model.roberta.encoder.layer[:n_layers]:
+            for p in layer.parameters():
+                p.requires_grad = False
+    return [p for p in model.parameters() if p.requires_grad]
+
+
 def train_roberta(train_texts, train_labels, valid_texts, valid_labels, eval_fn):
     """Fine-tune RoBERTa on lightly cleaned text; saves the epoch with the best validation F1."""
     torch.manual_seed(config.RANDOM_STATE)
@@ -47,19 +62,24 @@ def train_roberta(train_texts, train_labels, valid_texts, valid_labels, eval_fn)
 
     tokenizer = AutoTokenizer.from_pretrained(config.ROBERTA_MODEL_NAME)
     model = AutoModelForSequenceClassification.from_pretrained(config.ROBERTA_MODEL_NAME, num_labels=2)
+    trainable = _freeze_lower_layers(model, config.ROBERTA_FREEZE_LAYERS)
     loader = _batches(tokenizer, train_texts, train_labels, shuffle=True)
-    optim = torch.optim.AdamW(model.parameters(), lr=config.ROBERTA_LR, weight_decay=0.01)
+    optim = torch.optim.AdamW(trainable, lr=config.ROBERTA_LR, weight_decay=0.01)
     total_steps = len(loader) * config.ROBERTA_EPOCHS
     sched = get_linear_schedule_with_warmup(optim, int(0.06 * total_steps), total_steps)
+    # Class weights counter the Real/Fake imbalance (~69% / 31%).
+    counts = np.bincount(np.asarray(train_labels, dtype=int), minlength=2)
+    loss_fn = torch.nn.CrossEntropyLoss(weight=torch.tensor(len(train_labels) / (2 * counts), dtype=torch.float32))
 
     best_f1 = -1.0
     for epoch in range(1, config.ROBERTA_EPOCHS + 1):
         model.train()
         start = time.time()
         for step, enc in enumerate(loader, 1):
-            loss = model(**enc).loss
+            labels = enc.pop("labels")
+            loss = loss_fn(model(**enc).logits, labels)
             loss.backward()
-            torch.nn.utils.clip_grad_norm_(model.parameters(), 1.0)
+            torch.nn.utils.clip_grad_norm_(trainable, 1.0)
             optim.step()
             sched.step()
             optim.zero_grad()

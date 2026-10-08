@@ -12,11 +12,11 @@ import config
 
 def _classifiers():
     return {
-        "logistic_regression": LogisticRegression(max_iter=2000, C=4.0, class_weight="balanced"),
+        "logistic_regression": LogisticRegression(max_iter=3000, C=1.0, class_weight="balanced"),
         "random_forest": RandomForestClassifier(n_estimators=300, min_samples_leaf=2, n_jobs=-1,
                                                 class_weight="balanced", random_state=config.RANDOM_STATE),
         # LinearSVC has no predict_proba; calibration gives a confidence score.
-        "svm": CalibratedClassifierCV(LinearSVC(C=0.5, class_weight="balanced"), cv=3),
+        "svm": CalibratedClassifierCV(LinearSVC(C=0.1, class_weight="balanced"), cv=3),
     }
 
 
