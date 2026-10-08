@@ -37,6 +37,9 @@ async function api(path, options = {}) {
     throw new Error("Cannot reach the server. Is the Flask app running?");
   }
   const data = await res.json().catch(() => ({}));
+  if (res.status === 404 && !data.error) {
+    throw new Error("The backend API isn't running at this address. Start it with `python app.py` and open http://127.0.0.1:5000");
+  }
   if (!res.ok) throw new Error(data.error || `Request failed (${res.status})`);
   return data;
 }
