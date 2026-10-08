@@ -19,3 +19,4 @@ blockchain/chain-data/
 blockchain/deployment.json
 models/*.log
 models/probs_*.npz
+wheels/

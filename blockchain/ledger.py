@@ -1,4 +1,5 @@
 """Ethereum ledger service: compiles/deploys NewsRegistry and records/verifies news sources."""
+import hashlib
 import json
 import re
 import threading
@@ -47,13 +48,30 @@ def _domain(url):
 
 # ---------------------------------------------------------------- compile / deploy
 def compile_contract():
+    """Return (abi, bytecode) for NewsRegistry.
+
+    Uses the committed build artifact when it matches the current Solidity source, so a fresh
+    machine can deploy without downloading the solc compiler; otherwise compiles and refreshes it.
+    """
+    source_hash = hashlib.sha256(config.CONTRACT_SOURCE.read_bytes()).hexdigest()
+    if config.CONTRACT_ARTIFACT.exists():
+        artifact = json.loads(config.CONTRACT_ARTIFACT.read_text(encoding="utf-8"))
+        if artifact.get("source_sha256") == source_hash and artifact.get("solc_version") == config.SOLC_VERSION:
+            return artifact["abi"], artifact["bytecode"]
+
     import solcx
     if config.SOLC_VERSION not in [str(v) for v in solcx.get_installed_solc_versions()]:
         solcx.install_solc(config.SOLC_VERSION)
     out = solcx.compile_files([str(config.CONTRACT_SOURCE)], output_values=["abi", "bin"],
                               solc_version=config.SOLC_VERSION, evm_version="paris", optimize=True)
     key = next(k for k in out if k.endswith(":NewsRegistry"))
-    return out[key]["abi"], out[key]["bin"]
+    abi, bytecode = out[key]["abi"], out[key]["bin"]
+    config.CONTRACT_ARTIFACT.parent.mkdir(parents=True, exist_ok=True)
+    config.CONTRACT_ARTIFACT.write_text(json.dumps({
+        "contract": "NewsRegistry", "solc_version": config.SOLC_VERSION, "evm_version": "paris",
+        "source_sha256": source_hash, "abi": abi, "bytecode": bytecode,
+    }, indent=2), encoding="utf-8")
+    return abi, bytecode
 
 
 class Ledger:

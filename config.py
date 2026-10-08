@@ -55,6 +55,7 @@ ROBERTA_MAX_TRAIN = int(os.getenv("ROBERTA_MAX_TRAIN", "0"))
 # ---------------------------------------------------------------- blockchain
 BLOCKCHAIN_DIR = BASE_DIR / "blockchain"
 CONTRACT_SOURCE = BLOCKCHAIN_DIR / "contracts" / "NewsRegistry.sol"
+CONTRACT_ARTIFACT = BLOCKCHAIN_DIR / "build" / "NewsRegistry.json"   # compiled ABI + bytecode
 DEPLOYMENT_FILE = BLOCKCHAIN_DIR / "deployment.json"
 SOLC_VERSION = "0.8.19"
 ETH_RPC_URL = os.getenv("ETH_RPC_URL", "http://127.0.0.1:8545")

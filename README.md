@@ -60,6 +60,10 @@ Ethereum (Solidity 0.8.19, Ganache local node, web3.py, py-solc-x) · Flask · H
 
 ## Setup and run
 
+**Easiest way (Windows):** install Python 3.12 and Node.js LTS, double-click `setup.bat` once, then use
+`start.bat` every time. `RUN_GUIDE.html` is a step-by-step guide covering setup, the demo checklist and
+troubleshooting. The manual steps are below.
+
 Prerequisites: Python 3.10+ and Node.js 18+ (Node is needed only for the local Ethereum node, Ganache).
 
 ```bash

@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Run Guide — AI Fake News Detection</title>
+<style>
+  :root {
+    --bg: #f7f5f0; --paper: #ffffff; --ink: #1d1b17; --muted: #6b665c; --line: #e6e1d6;
+    --gold: #a8823f; --gold-bg: #faf3e3; --green: #1f7a4d; --green-bg: #e7f5ed;
+    --red: #b4232f; --red-bg: #fbe9ea; --blue-bg: #eef2f9; --code-bg: #1d1b17; --code-ink: #f5f0e6;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #0d0c0b; --paper: #161513; --ink: #f2ede3; --muted: #a39d91; --line: #2c2a26;
+      --gold: #d8b46a; --gold-bg: #2a2416; --green: #5fd49b; --green-bg: #15281e;
+      --red: #f27a84; --red-bg: #2c1618; --blue-bg: #171c26; --code-bg: #000; --code-ink: #f5f0e6;
+    }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font: 16px/1.7 "Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif; }
+  .wrap { max-width: 920px; margin: 0 auto; padding: 32px 16px 80px; }
+  header.hero { background: var(--paper); border: 1px solid var(--line); border-radius: 18px; padding: 28px; margin-bottom: 22px; }
+  header.hero h1 { font-family: Georgia, "Times New Roman", serif; font-weight: 400; font-size: 2.1rem; line-height: 1.15; margin: 0 0 8px; }
+  header.hero h1 em { color: var(--gold); }
+  header.hero p { margin: 4px 0; color: var(--muted); }
+  nav.toc { background: var(--paper); border: 1px solid var(--line); border-radius: 18px; padding: 18px 24px; margin-bottom: 22px; }
+  nav.toc ol { margin: 6px 0 0; padding-left: 22px; columns: 2; column-gap: 32px; }
+  nav.toc a { color: var(--ink); text-decoration: none; border-bottom: 1px dotted var(--muted); }
+  section { background: var(--paper); border: 1px solid var(--line); border-radius: 18px; padding: 24px 28px; margin-bottom: 22px; }
+  h2 { font-family: Georgia, "Times New Roman", serif; font-weight: 400; font-size: 1.6rem; margin: 0 0 12px; }
+  h2 .no { color: var(--gold); font-style: italic; margin-right: 6px; }
+  h3 { font-size: 1.05rem; margin: 22px 0 6px; }
+  code { font-family: Consolas, "Cascadia Code", monospace; font-size: .9em; background: var(--gold-bg); padding: 1px 6px; border-radius: 6px; }
+  pre { background: var(--code-bg); color: var(--code-ink); padding: 14px 16px; border-radius: 12px; overflow-x: auto; font: 14px/1.6 Consolas, "Cascadia Code", monospace; margin: 8px 0 14px; }
+  pre code { background: none; padding: 0; color: inherit; }
+  table { width: 100%; border-collapse: collapse; font-size: .95rem; margin: 8px 0 12px; }
+  th, td { text-align: left; vertical-align: top; padding: 9px 10px; border-bottom: 1px solid var(--line); }
+  th { font-size: .78rem; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); }
+  .table-wrap { overflow-x: auto; }
+  .note, .warn, .ok { border-radius: 12px; padding: 12px 16px; margin: 12px 0; }
+  .note { background: var(--blue-bg); }
+  .warn { background: var(--red-bg); }
+  .ok { background: var(--green-bg); }
+  .step { display: grid; grid-template-columns: 38px 1fr; gap: 12px; margin: 16px 0; }
+  .step .n { width: 34px; height: 34px; border-radius: 50%; background: var(--gold); color: #fff; display: grid; place-items: center; font-weight: 700; }
+  .step h3 { margin-top: 4px; }
+  .tag { display: inline-block; font-size: .78rem; font-weight: 600; padding: 1px 9px; border-radius: 99px; }
+  .tag.fake { background: var(--red-bg); color: var(--red); }
+  .tag.real { background: var(--green-bg); color: var(--green); }
+  .muted { color: var(--muted); }
+  ul.check { list-style: none; padding-left: 0; }
+  ul.check li { padding-left: 28px; position: relative; margin: 6px 0; }
+  ul.check li::before { content: "☐"; position: absolute; left: 2px; color: var(--gold); }
+  footer { text-align: center; color: var(--muted); font-size: .88rem; margin-top: 30px; }
+  @media (max-width: 640px) { nav.toc ol { columns: 1; } section, header.hero { padding: 20px; } }
+  @media print { body { background: #fff; } section, header.hero, nav.toc { break-inside: avoid; border-color: #ccc; } pre { white-space: pre-wrap; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <h1>AI Fake News Detection — <em>Run Guide</em></h1>
+  <p>Project ko kisi bhi Windows laptop pe setup aur run karne ki mukammal guide.</p>
+  <p>Fatima Aamir (MLT-0000125) · Hijab Fatima (MLT-0000115) · Supervisor: Ms. Sanam Nayab · NUML Multan</p>
+</header>
+
+<nav class="toc">
+  <strong>Fehrist (Contents)</strong>
+  <ol>
+    <li><a href="#about">Project kya hai</a></li>
+    <li><a href="#contents">Zip mein kya hai</a></li>
+    <li><a href="#requirements">Laptop requirements</a></li>
+    <li><a href="#setup">Pehli dafa setup (one-time)</a></li>
+    <li><a href="#run">Har dafa run karna</a></li>
+    <li><a href="#manual">Manual commands (backup tareeqa)</a></li>
+    <li><a href="#use">App kaise use karein</a></li>
+    <li><a href="#demo">Demo / viva checklist</a></li>
+    <li><a href="#advanced">Advanced: training, tests, admin</a></li>
+    <li><a href="#trouble">Masle aur hal (Troubleshooting)</a></li>
+  </ol>
+</nav>
+
+<section id="about">
+  <h2><span class="no">1</span>Project kya hai</h2>
+  <p>Ye ek website hai jisme aap <strong>news headline ya article</strong> daalte hain aur system 2 kaam karta hai:</p>
+  <ol>
+    <li><strong>AI detection:</strong> trained model (RoBERTa, CNN, LSTM, Logistic Regression, Random Forest, SVM) batata hai news <span class="tag real">REAL</span> hai ya <span class="tag fake">FAKE</span>, confidence % ke saath.</li>
+    <li><strong>Blockchain source traceability:</strong> news ka source <strong>Ethereum blockchain</strong> pe ek unique hash ke saath record hota hai. Record baad mein badla ya mitaya nahi ja sakta, aur system batata hai source verified hai ya nahi.</li>
+  </ol>
+  <p class="muted">Technologies (proposal ke mutabiq): Python, Scikit-learn, PyTorch, NLTK, Pandas, Ethereum (Solidity + Ganache), Flask, HTML/CSS/JavaScript. Datasets: FakeNewsNet + LIAR.</p>
+</section>
+
+<section id="contents">
+  <h2><span class="no">2</span>Zip mein kya hai</h2>
+  <div class="table-wrap"><table>
+    <tr><th>File / folder</th><th>Kaam</th></tr>
+    <tr><td><code>setup.bat</code></td><td>Naye laptop pe <strong>sirf ek dafa</strong> chalana hai — sab install karta hai</td></tr>
+    <tr><td><code>start.bat</code></td><td><strong>Har dafa</strong> app chalane ke liye — double-click</td></tr>
+    <tr><td><code>RUN_GUIDE.html</code></td><td>Ye guide</td></tr>
+    <tr><td><code>models/</code></td><td>Trained AI models (RoBERTa ~480 MB samait). Inhe <strong>delete na karein</strong></td></tr>
+    <tr><td><code>wheels/</code></td><td>Saare Python packages (PyTorch etc.) — offline install ke liye</td></tr>
+    <tr><td><code>blockchain/</code></td><td>Smart contract (Solidity), Ganache node, aur saved blockchain records (<code>chain-data</code>)</td></tr>
+    <tr><td><code>data/</code></td><td>Datasets (FakeNewsNet, LIAR) aur NLTK data</td></tr>
+    <tr><td><code>ml/</code>, <code>app.py</code>, <code>templates/</code>, <code>static/</code></td><td>Source code: AI, Flask backend, website</td></tr>
+    <tr><td><code>README.md</code></td><td>Technical documentation + results</td></tr>
+  </table></div>
+</section>
+
+<section id="requirements">
+  <h2><span class="no">3</span>Laptop requirements</h2>
+  <div class="table-wrap"><table>
+    <tr><th>Cheez</th><th>Zaroorat</th></tr>
+    <tr><td>Operating system</td><td>Windows 10 ya 11 (64-bit)</td></tr>
+    <tr><td>RAM</td><td>Kam az kam 4 GB (8 GB behtar)</td></tr>
+    <tr><td>Disk space</td><td>Takreeban 5 GB khali</td></tr>
+    <tr><td>Python</td><td><strong>Python 3.12</strong> (python.org se)</td></tr>
+    <tr><td>Node.js</td><td>LTS version (nodejs.org se)</td></tr>
+    <tr><td>Internet</td><td>Setup ke liye <strong>zaroori nahi</strong> (packages zip mein hain). Sirf Python/Node installers download karne ke liye chahiye</td></tr>
+  </table></div>
+  <div class="note"><strong>Python 3.12 hi kyun?</strong> Zip ke <code>wheels</code> folder mein packages Python 3.12 ke liye hain, is liye offline install sirf 3.12 pe hoga. Doosra version (3.10/3.11/3.13) ho to setup internet se ~1 GB download karega.</div>
+</section>
+
+<section id="setup">
+  <h2><span class="no">4</span>Pehli dafa setup (one-time)</h2>
+
+  <div class="step"><div class="n">1</div><div>
+    <h3>Zip extract karein</h3>
+    <p>Zip file pe right-click → <strong>Extract All…</strong> → koi chhota path chunein, jaise <code>D:\fake-news-detection</code>.</p>
+    <div class="warn">Zip ke <strong>andar se</strong> files mat chalayein — pehle poora extract karein. OneDrive wale folders se bhi bachein.</div>
+  </div></div>
+
+  <div class="step"><div class="n">2</div><div>
+    <h3>Python 3.12 install karein</h3>
+    <p><code>https://www.python.org/downloads/</code> se Python 3.12 ka <strong>Windows installer (64-bit)</strong> download karein.</p>
+    <div class="warn">Installer ki pehli screen pe <strong>"Add python.exe to PATH"</strong> ka checkbox zaroor tick karein, phir <strong>Install Now</strong>.</div>
+  </div></div>
+
+  <div class="step"><div class="n">3</div><div>
+    <h3>Node.js install karein</h3>
+    <p><code>https://nodejs.org</code> se <strong>LTS</strong> version download karke default settings ke saath install karein (Next → Next → Install).</p>
+  </div></div>
+
+  <div class="step"><div class="n">4</div><div>
+    <h3><code>setup.bat</code> pe double-click karein</h3>
+    <p>Ek black window khulegi aur 6 steps chalenge: Python check → Node check → environment banana → packages install → Ganache → models check. Takreeban <strong>10–30 minute</strong> lagenge (PyTorch bara package hai, aur Windows Defender files scan karta hai) — window band na karein.</p>
+    <div class="ok">Aakhir mein <strong>"Setup complete"</strong> aur ek test prediction nazar aaye to setup kamyab hai. Ye kaam sirf ek dafa karna hai.</div>
+    <p class="muted">Agar Windows "Windows protected your PC" dikhaye to <strong>More info → Run anyway</strong> dabayein.</p>
+  </div></div>
+</section>
+
+<section id="run">
+  <h2><span class="no">5</span>Har dafa run karna</h2>
+  <div class="step"><div class="n">▶</div><div>
+    <h3><code>start.bat</code> pe double-click karein</h3>
+    <p>Ye khud ba khud:</p>
+    <ol>
+      <li><strong>Ganache</strong> (local Ethereum blockchain) chalata hai — ek chhoti window minimize ho kar khulti hai,</li>
+      <li><strong>Web app</strong> (Flask) chalata hai — doosri window,</li>
+      <li>App tayyar hone par browser mein <code>http://127.0.0.1:5000</code> khol deta hai.</li>
+    </ol>
+    <p><strong>Band karna:</strong> "Ganache - Ethereum node" aur "Fake News Detection - web app" — dono windows band kar dein.</p>
+    <div class="note">Pehli analysis mein 15–30 second lag sakte hain kyunke RoBERTa model memory mein load hota hai. Uske baad har analysis jaldi hoti hai.</div>
+  </div></div>
+</section>
+
+<section id="manual">
+  <h2><span class="no">6</span>Manual commands (agar .bat files na chalein)</h2>
+  <p>Project folder mein 2 alag Command Prompt windows kholein.</p>
+  <h3>Window 1 — blockchain</h3>
+<pre><code>cd blockchain
+npm run chain</code></pre>
+  <h3>Window 2 — web app</h3>
+<pre><code>.venv\Scripts\python app.py</code></pre>
+  <p>Phir browser mein kholein: <code>http://127.0.0.1:5000</code></p>
+  <h3>Setup bhi manually (agar setup.bat na chale)</h3>
+<pre><code>py -3.12 -m venv .venv
+.venv\Scripts\python -m pip install --no-index --find-links wheels -r requirements.txt
+cd blockchain
+npm install
+cd ..</code></pre>
+</section>
+
+<section id="use">
+  <h2><span class="no">7</span>App kaise use karein</h2>
+  <div class="table-wrap"><table>
+    <tr><th>Section</th><th>Kya karta hai</th></tr>
+    <tr><td><strong>Intro</strong></td><td>Cinematic opening — "Skip intro" ya <code>Esc</code> se skip</td></tr>
+    <tr><td><strong>Analyze</strong></td><td>News text + source (jaise <code>bbc.com</code>) + model chunein → <strong>Analyze news</strong>. Result: REAL/FAKE stamp, confidence gauge, source verification, blockchain block</td></tr>
+    <tr><td><strong>Trace source</strong></td><td>Kisi news ka original source dhoondna (blockchain pe kuch likha nahi jata), ya hash se record dekhna</td></tr>
+    <tr><td><strong>Ledger</strong></td><td>Blockchain ke records (blocks ki chain) aur verified sources ki list</td></tr>
+    <tr><td><strong>Models</strong></td><td>Saare 6 models ki accuracy, precision, recall, F1</td></tr>
+  </table></div>
+  <h3>Source verification ke 4 nataij</h3>
+  <div class="table-wrap"><table>
+    <tr><th>Status</th><th>Matlab</th></tr>
+    <tr><td>✅ <strong>Verified</strong></td><td>Source trusted list mein hai (reuters.com, bbc.com, dawn.com waghera)</td></tr>
+    <tr><td>⚠️ <strong>Unverified</strong></td><td>Source diya gaya, lekin trusted nahi</td></tr>
+    <tr><td>❌ <strong>Source Mismatch</strong></td><td>Yehi news pehle <strong>kisi aur source</strong> se record ho chuki hai — koi copy kar raha hai</td></tr>
+    <tr><td>⚠️ <strong>No Source</strong></td><td>Source diya hi nahi gaya</td></tr>
+  </table></div>
+  <p class="muted">"Record on blockchain" switch off karein to analysis blockchain pe save nahi hogi.</p>
+</section>
+
+<section id="demo">
+  <h2><span class="no">8</span>Demo / viva checklist</h2>
+  <ul class="check">
+    <li>App khule to upar right pe "6 AI models" aur "Ethereum · block …" dono <strong>green</strong> hon.</li>
+    <li><strong>Fake example:</strong> <em>"Celebrity secretly replaced by a body double years ago, insiders claim"</em>, source <code>gossipblog.net</code> → <span class="tag fake">FAKE</span> + <strong>Unverified</strong> + naya block.</li>
+    <li><strong>Real example:</strong> <em>"Senate passes bipartisan infrastructure bill after months of negotiations"</em>, Source URL <code>https://www.reuters.com/world</code> → <span class="tag real">REAL</span> + <strong>✅ Verified</strong>.</li>
+    <li><strong>Duplicate:</strong> wahi fake headline dobara analyze karein → "already on the ledger", original record dikhega.</li>
+    <li><strong>Source Mismatch:</strong> Trace source mein fake headline + claimed source <code>bbc.com</code> → <strong>❌ Source Mismatch</strong>.</li>
+    <li><strong>Hash lookup:</strong> result se content hash copy karke "Look up by record hash" mein daalein → record + "Integrity: Intact".</li>
+    <li><strong>Ledger</strong> section mein naye blocks ki chain dikhayein.</li>
+    <li><strong>Models</strong> section mein RoBERTa ko best model ke taur pe dikhayein.</li>
+  </ul>
+  <div class="note">
+    <strong>Agar poocha jaye "100% accurate kyun nahi?"</strong><br>
+    "No fake news detector is 100% accurate, because the model learns linguistic patterns — it cannot verify facts.
+    Our datasets are headline-level and LIAR is a known hard benchmark. That is why we built a dual trust model:
+    AI classification plus blockchain-based source verification."
+  </div>
+  <h3>Results (test set)</h3>
+  <div class="table-wrap"><table>
+    <tr><th>Model</th><th>Accuracy</th><th>F1 (Fake)</th><th>FakeNewsNet</th><th>LIAR</th></tr>
+    <tr><td><strong>RoBERTa (default)</strong></td><td><strong>77.8%</strong></td><td><strong>0.664</strong></td><td><strong>87.0%</strong></td><td><strong>62.2%</strong></td></tr>
+    <tr><td>Logistic Regression</td><td>74.8%</td><td>0.609</td><td>84.4%</td><td>58.4%</td></tr>
+    <tr><td>SVM</td><td>73.0%</td><td>0.624</td><td>83.3%</td><td>55.5%</td></tr>
+    <tr><td>Random Forest</td><td>72.4%</td><td>0.588</td><td>82.2%</td><td>55.8%</td></tr>
+    <tr><td>BiLSTM</td><td>71.1%</td><td>0.600</td><td>81.5%</td><td>53.4%</td></tr>
+    <tr><td>CNN</td><td>71.0%</td><td>0.562</td><td>80.5%</td><td>54.8%</td></tr>
+  </table></div>
+</section>
+
+<section id="advanced">
+  <h2><span class="no">9</span>Advanced: training, tests, admin</h2>
+  <p class="muted">Ye sab project folder mein Command Prompt khol kar chalayein. Normal demo ke liye in ki zaroorat nahi.</p>
+  <h3>Tests chalana (14 tests)</h3>
+<pre><code>.venv\Scripts\python -m pytest -v</code></pre>
+  <h3>Verified source add / remove karna (Ganache chal raha ho)</h3>
+<pre><code>.venv\Scripts\python -m blockchain.manage sources
+.venv\Scripts\python -m blockchain.manage add-source geo.tv
+.venv\Scripts\python -m blockchain.manage remove-source geo.tv</code></pre>
+  <h3>Models dobara train karna</h3>
+<pre><code>.venv\Scripts\python -m ml.data
+.venv\Scripts\python -m ml.train --models logistic_regression random_forest svm cnn lstm
+set ROBERTA_EPOCHS=2
+.venv\Scripts\python -m ml.train --models roberta</code></pre>
+  <div class="warn">RoBERTa training CPU pe <strong>~3 ghante</strong> leti hai aur purane model ko replace kar deti hai. Training ke dauran app ya heavy software na chalayein.</div>
+  <h3>Blockchain reset karna (saare records mitaa kar naya contract)</h3>
+  <p>Ganache window band karein, phir <code>blockchain\chain-data</code> folder aur <code>blockchain\deployment.json</code> file delete karein. Agli dafa start.bat chalane pe naya contract khud deploy ho jayega.</p>
+</section>
+
+<section id="trouble">
+  <h2><span class="no">10</span>Masle aur hal (Troubleshooting)</h2>
+  <div class="table-wrap"><table>
+    <tr><th>Masla</th><th>Hal</th></tr>
+    <tr><td>setup.bat: "Python 3.10+ was not found"</td><td>Python 3.12 install karein aur <strong>"Add python.exe to PATH"</strong> tick karein. Phir naye sire se setup.bat chalayein.</td></tr>
+    <tr><td>setup.bat: "Node.js was not found"</td><td>nodejs.org se LTS install karein, phir setup.bat dobara.</td></tr>
+    <tr><td>setup.bat packages pe fail</td><td>Python 3.12 ke bajaye koi aur version hai aur internet nahi. Python 3.12 install karein, <code>.venv</code> folder delete karein, setup.bat dobara.</td></tr>
+    <tr><td>Browser mein "Request failed (404)" / model "Unavailable"</td><td>Ghalat address khula hai. Hamesha <code>http://127.0.0.1:5000</code> kholein, aur web app window chal rahi ho.</td></tr>
+    <tr><td>"Blockchain unavailable"</td><td>Ganache window band ho gayi. start.bat dobara chalayein. (AI result phir bhi aata hai.)</td></tr>
+    <tr><td>"Address already in use" / port 5000 busy</td><td>App pehle se chal rahi hai — purani windows band karein ya computer restart karein.</td></tr>
+    <tr><td>Pehli analysis bahut slow</td><td>Normal hai — RoBERTa load ho raha hota hai (15–30 sec). Kam RAM wale laptop pe dropdown se Logistic Regression chunein, wo foran chalta hai.</td></tr>
+    <tr><td>Fonts saade (plain) lag rahe hain</td><td>Internet nahi hai — Google Fonts load nahi hue. App bilkul theek chalti hai, sirf font badalta hai.</td></tr>
+    <tr><td>Antivirus .bat file block kare</td><td>Antivirus mein project folder ko allow karein, ya section 6 ke manual commands use karein.</td></tr>
+  </table></div>
+</section>
+
+<footer>AI-Powered Fake News Detection and Source Traceability Using Blockchain · Department of Software Engineering, NUML Multan</footer>
+</div>
+</body>
+</html>
